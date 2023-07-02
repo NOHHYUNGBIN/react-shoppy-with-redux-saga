@@ -1,5 +1,5 @@
 import React from "react";
-import Product from "../component/Product";
+import Product from "./Product";
 import Banner from "../component/Banner";
 
 export default function Home() {

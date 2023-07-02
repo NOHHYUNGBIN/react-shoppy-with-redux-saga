@@ -4,7 +4,7 @@ import axios from "axios";
 
 const getProductAPI = async () => {
   try {
-    const response = await axios.get("https://fakestoreapi.com/products1111");
+    const response = await axios.get("https://fakestoreapi.com/products");
     return response.data;
   } catch (error) {
     throw new Error(`API request failed: ${error.message}`);

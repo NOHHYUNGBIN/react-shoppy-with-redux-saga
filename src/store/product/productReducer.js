@@ -16,10 +16,10 @@ const productReducer = (state = initialState, action) => {
         productList: action.data,
       };
     case actionType.GET_PRODUCT_ITEM_FAIL:
-      console.debug(action);
+      console.debug("action", action);
       return {
         ...state,
-        error: action.error,
+        error: action.error.message,
       };
     default:
       return state;
