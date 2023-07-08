@@ -4,9 +4,13 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Home from "./page/Home";
-import Cart from "./page/Cart";
-import NotFound from "./page/NotFound";
+import NotFound from "./pages/NotFound";
+import Home from "./pages/Home";
+import AllProducts from "./pages/AllProducts";
+import NewProduct from "./pages/NewProduct";
+import ProductDetail from "./pages/ProductDetail";
+import MyCart from "./pages/MyCart";
+import ProtecktedRoute from "./pages/ProtecktedRoute";
 
 const router = createBrowserRouter([
   {
@@ -14,18 +18,27 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFound />,
     children: [
+      { index: true, path: "/", element: <Home /> },
+      { path: "/products", element: <AllProducts /> },
       {
-        index: true,
-        path: "/",
-        element: <Home />,
-      },
-      {
-        path: "/carts",
-        element: <Cart />,
+        path: "/products/new",
+        element: (
+          <ProtecktedRoute requireAdmin>
+            <NewProduct />
+          </ProtecktedRoute>
+        ),
       },
       {
         path: "/products/:id",
-        element: null,
+        element: <ProductDetail />,
+      },
+      {
+        path: "/carts",
+        element: (
+          <ProtecktedRoute>
+            <MyCart />
+          </ProtecktedRoute>
+        ),
       },
     ],
   },

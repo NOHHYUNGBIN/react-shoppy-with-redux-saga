@@ -1,18 +1,18 @@
+import "./App.css";
 import { Outlet } from "react-router-dom";
-import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import rootSagas, { rootReducers } from "./store";
-import createSagaMiddleware from "@redux-saga/core";
+import Navbar from "./components/Navbar";
+import { AuthContextProvider } from "./context/AuthContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const sagaMiddleware = createSagaMiddleware();
-const store = createStore(rootReducers, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(rootSagas);
-
+const queryClient = new QueryClient();
 function App() {
   return (
-    <Provider store={store}>
-      <Outlet />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <AuthContextProvider>
+        <Navbar />
+        <Outlet />
+      </AuthContextProvider>
+    </QueryClientProvider>
   );
 }
 
