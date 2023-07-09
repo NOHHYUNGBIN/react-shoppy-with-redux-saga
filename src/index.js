@@ -11,7 +11,6 @@ import NewProduct from "./pages/NewProduct";
 import ProductDetail from "./pages/ProductDetail";
 import MyCart from "./pages/MyCart";
 import ProtecktedRoute from "./pages/ProtecktedRoute";
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +42,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

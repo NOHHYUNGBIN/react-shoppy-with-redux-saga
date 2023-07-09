@@ -1,6 +1,6 @@
 import * as actionType from "../type";
 const initialState = {
-  productList: [],
+  data: [],
 };
 
 const productReducer = (state = initialState, action) => {
@@ -13,10 +13,9 @@ const productReducer = (state = initialState, action) => {
     case actionType.GET_PRODUCT_ITEM_SUCCESS:
       return {
         ...state,
-        productList: action.data,
+        data: action.product,
       };
     case actionType.GET_PRODUCT_ITEM_FAIL:
-      console.debug("action", action);
       return {
         ...state,
         error: action.error.message,

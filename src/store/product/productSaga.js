@@ -1,11 +1,12 @@
-import { all, takeLatest, call, put } from "redux-saga/effects";
+import { all, takeLatest, call, put, takeEvery } from "redux-saga/effects";
 import * as actionType from "../type";
-import axios from "axios";
+import { getProducts } from "../../api/firebase";
 
 const getProductAPI = async () => {
   try {
-    const response = await axios.get("https://fakestoreapi.com/products");
-    return response.data;
+    const response = await getProducts();
+    console.debug("response", response);
+    return response;
   } catch (error) {
     throw new Error(`API request failed: ${error.message}`);
   }
@@ -15,7 +16,7 @@ function* getProductItem() {
     const product = yield call(getProductAPI);
     yield put({
       type: actionType.GET_PRODUCT_ITEM_SUCCESS,
-      data: product,
+      product,
     });
   } catch (err) {
     yield put({
@@ -25,5 +26,5 @@ function* getProductItem() {
   }
 }
 export default function* productSaga() {
-  yield all([takeLatest(actionType.GET_PRODUCT_ITEM_REQ, getProductItem)]);
+  yield all([takeEvery(actionType.GET_PRODUCT_ITEM_REQ, getProductItem)]);
 }
