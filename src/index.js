@@ -11,6 +11,8 @@ import NewProduct from "./pages/NewProduct";
 import ProductDetail from "./pages/ProductDetail";
 import MyCart from "./pages/MyCart";
 import ProtecktedRoute from "./pages/ProtecktedRoute";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
             <MyCart />
           </ProtecktedRoute>
         ),
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/signup",
+        element: <Signup />,
       },
     ],
   },

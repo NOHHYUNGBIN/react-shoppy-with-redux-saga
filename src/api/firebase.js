@@ -6,8 +6,10 @@ import {
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { getDatabase, ref, get, set, remove } from "firebase/database";
+import { message } from "antd";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -23,7 +25,15 @@ provider.setCustomParameters({
   prompt: "select_account",
 });
 export async function logIn() {
-  signInWithPopup(auth, provider);
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    if (error.code === "auth/popup-closed-by-user") {
+      message.warning("로그인이 취소되었습니다.");
+    } else {
+      message.warning("로그인 중 오류가 발생했습니다.");
+    }
+  }
 }
 export async function logOut() {
   signOut(auth).catch(console.error);
@@ -77,4 +87,25 @@ export async function addOrUpdateToCart(userId, product) {
 }
 export async function removeFromCart(userId, productId) {
   return remove(ref(database, `carts/${userId}/${productId}`));
+}
+export async function signUp(email, password) {
+  console.debug(email, password);
+  return;
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const user = userCredential.user;
+
+    await set(ref(database, `users/${user.uid}`), {
+      email: user.email,
+      createdAt: new Date().toISOString(),
+    });
+
+    return user;
+  } catch (error) {
+    throw new Error(`회원가입 중 오류가 발생했습니다: ${error.message}`);
+  }
 }

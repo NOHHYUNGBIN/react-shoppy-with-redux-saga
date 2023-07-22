@@ -5,7 +5,6 @@ import { getProducts } from "../../api/firebase";
 const getProductAPI = async () => {
   try {
     const response = await getProducts();
-    console.debug("response", response);
     return response;
   } catch (error) {
     throw new Error(`API request failed: ${error.message}`);
