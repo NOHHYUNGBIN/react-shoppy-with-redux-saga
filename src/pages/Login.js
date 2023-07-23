@@ -1,19 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Form, Input, Button } from "antd";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Form, Input, Button, Alert, Spin, message } from "antd";
 import { GoogleOutlined } from "@ant-design/icons";
 import { useAuthContext } from "../context/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { signInReq } from "../store/user/action";
 
 const Login = () => {
   const { logIn } = useAuthContext();
+  const { error, loading, signInSuccess, signUpSuccess } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  console.debug("signInSuccess", signInSuccess);
+  console.debug("signUpSuccess", signUpSuccess);
   const onFinish = (values) => {
-    console.log("Received values:", values);
+    const { email, password } = values;
+    dispatch(signInReq(email, password));
   };
 
-  const handleGoogleLogin = () => {
-    // 구글 로그인 처리 로직
-  };
-
+  useEffect(() => {
+    if (signInSuccess) {
+      message.success("즐거운 쇼핑 되세요!");
+      navigate("/");
+    }
+  }, [signInSuccess]);
   return (
     <div className="flex justify-center items-center h-screen bg-gray-100">
       <Form
@@ -62,6 +74,8 @@ const Login = () => {
             </Button>
           </div>
         </Form.Item>
+        {loading && <Spin />}
+        {error && <Alert message={error} type="error" />}
         <Form.Item>
           아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
         </Form.Item>

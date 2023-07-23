@@ -7,10 +7,12 @@ import {
   signOut,
   onAuthStateChanged,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
 } from "firebase/auth";
 import { getDatabase, ref, get, set, remove } from "firebase/database";
 import { message } from "antd";
-
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -89,8 +91,6 @@ export async function removeFromCart(userId, productId) {
   return remove(ref(database, `carts/${userId}/${productId}`));
 }
 export async function signUp(email, password) {
-  console.debug(email, password);
-  return;
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -103,9 +103,19 @@ export async function signUp(email, password) {
       email: user.email,
       createdAt: new Date().toISOString(),
     });
-
-    return user;
+    await signOut(auth);
   } catch (error) {
     throw new Error(`회원가입 중 오류가 발생했습니다: ${error.message}`);
   }
+}
+
+export async function signIn(email, password) {
+  await signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      return user;
+    })
+    .catch((error) => {
+      throw new Error(`로그인 중 오류가 발생했습니다: ${error.message}`);
+    });
 }

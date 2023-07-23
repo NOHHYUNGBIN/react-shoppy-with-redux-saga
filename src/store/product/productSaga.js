@@ -1,4 +1,4 @@
-import { all, takeLatest, call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import * as actionType from "../type";
 import { getProducts } from "../../api/firebase";
 
@@ -25,5 +25,5 @@ function* getProductItem() {
   }
 }
 export default function* productSaga() {
-  yield all([takeEvery(actionType.GET_PRODUCT_ITEM_REQ, getProductItem)]);
+  yield takeEvery(actionType.GET_PRODUCT_ITEM_REQ, getProductItem);
 }
